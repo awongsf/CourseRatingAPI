@@ -3,8 +3,25 @@
 // load modules
 var express = require('express');
 var morgan = require('morgan');
+var mongoose = require('mongoose');
 
 var app = express();
+
+// mongodb connection
+mongoose.connect("mongodb://localhost:27017/courses");
+var db = mongoose.connection;
+// mongo error
+db.on('error', function(err){
+	console.error('connection error:', err);
+});
+// successful connection
+db.once('open', function(){
+	console.log('db connection successful');
+
+	db.close(function(){
+		console.log('db connection closed');
+	});
+});
 
 // set our port
 app.set('port', process.env.PORT || 5000);
