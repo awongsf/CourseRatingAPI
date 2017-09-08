@@ -4,6 +4,8 @@
 var express = require('express');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
+var seeder = require('mongoose-seeder');
+var data - require('./data/data.json');
 
 var app = express();
 
@@ -17,6 +19,12 @@ db.on('error', function(err){
 // successful connection
 db.once('open', function(){
 	console.log('db connection successful');
+
+	seeder.seed(data).then(function(dbData){
+		console.log('Database seeded with data');
+	}).catch(function(err) {
+		console.error('seeder error:', err)
+	});
 
 	db.close(function(){
 		console.log('db connection closed');
